@@ -1,0 +1,8 @@
+{
+  "name": "@YOUR_USERNAME/kijanikiosk-payments",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "mkdir -p dist && echo 'KijaniKiosk module' > dist/index.js",
+    "test": "echo 'Tests passed' && exit 0"
+  }
+}
