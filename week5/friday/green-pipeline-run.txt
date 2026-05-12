@@ -1,0 +1,222 @@
+Started by user Ashley Mitei
+
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins
+ in /var/jenkins_home/workspace/kijanikiosk-pipeline-w5
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] deleteDir
+[Pipeline] sh
++ git clone https://github.com/MiteiAsh/kijanikiosk-payments.git .
+Cloning into '.'...
++ ls -la
+total 20
+drwxr-xr-x 3 root    root    4096 May 12 06:16 .
+drwxr-xr-x 8 jenkins jenkins 4096 May 12 06:16 ..
+drwxr-xr-x 8 root    root    4096 May 12 06:16 .git
+-rw-r--r-- 1 root    root    1568 May 12 06:16 Jenkinsfile
+-rw-r--r-- 1 root    root     211 May 12 06:16 package.json
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Setup Node)
+[Pipeline] sh
++ curl -fsSL https://deb.nodesource.com/setup_18.x
++ bash -
+␛[1;31m2026-05-12 06:16:24 - 
+===============================================================================
+                            DEPRECATION WARNING                            
+===============================================================================
+Node.js 18.x is no longer actively supported!
+You will not receive security or critical stability updates for this version.
+
+You should migrate to a supported version of Node.js as soon as possible.
+
+Please see https://nodesource.com/products/distributions for details about which
+version may be appropriate for you.
+
+The NodeSource Node.js distributions site contains
+information both about supported versions of Node.js and N|Solid supported Linux
+distributions. To learn more about usage, see:
+https://nodesource.com/products/distributions
+
+===============================================================================
+
+Continuing in 10 seconds ...
+␛[0m
+␛[38;5;79m2026-05-12 06:16:34 - Installing pre-requisites␛[0m
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 https://deb.nodesource.com/node_18.x nodistro InRelease
+Hit:2 http://deb.debian.org/debian trixie InRelease
+Hit:3 http://deb.debian.org/debian trixie-updates InRelease
+Hit:4 http://deb.debian.org/debian-security trixie-security InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+15 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+apt-transport-https is already the newest version (3.0.3).
+ca-certificates is already the newest version (20250419).
+curl is already the newest version (8.14.1-2+deb13u2).
+gnupg is already the newest version (2.4.7-21+deb13u1).
+Summary:
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 15
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 https://deb.nodesource.com/node_18.x nodistro InRelease
+Hit:2 http://deb.debian.org/debian trixie InRelease
+Hit:3 http://deb.debian.org/debian trixie-updates InRelease
+Hit:4 http://deb.debian.org/debian-security trixie-security InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+15 packages can be upgraded. Run 'apt list --upgradable' to see them.
+␛[1;34m2026-05-12 06:16:39 - Repository configured successfully.␛[0m
+␛[38;5;79m2026-05-12 06:16:39 - To install Node.js, run: apt install nodejs -y␛[0m
+␛[38;5;79m2026-05-12 06:16:39 - You can use N|solid Runtime as a node.js alternative␛[0m
+␛[1;32m2026-05-12 06:16:39 - To install N|solid Runtime, run: apt install nsolid -y 
+␛[0m
++ apt-get install -y nodejs -y
+Reading package lists...
+Building dependency tree...
+Reading state information...
+nodejs is already the newest version (18.20.8-1nodesource1).
+0 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
++ node --version
+v18.20.8
++ npm --version
+10.8.2
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (List)
+[Pipeline] sh
++ node --version
+v18.20.8
++ npm --version
+10.8.2
++ ls -la
+total 20
+drwxr-xr-x 3 root    root    4096 May 12 06:16 .
+drwxr-xr-x 8 jenkins jenkins 4096 May 12 06:16 ..
+drwxr-xr-x 8 root    root    4096 May 12 06:16 .git
+-rw-r--r-- 1 root    root    1568 May 12 06:16 Jenkinsfile
+-rw-r--r-- 1 root    root     211 May 12 06:16 package.json
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ npm install
+
+up to date, audited 1 package in 308ms
+
+found 0 vulnerabilities
+[Pipeline] sh
++ npm run build
+
+> @miteiashley/kijanikiosk-payments@1.0.0 build
+> mkdir -p dist && echo 'KijaniKiosk module' > dist/index.js
+
+[Pipeline] stash
+Stashed 2 file(s)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Verify)
+[Pipeline] parallel
+[Pipeline] { (Branch: Test)
+[Pipeline] { (Branch: Security Audit)
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] stage
+[Pipeline] { (Security Audit)
+[Pipeline] sh
+[Pipeline] sh
++ npm test
+
+> @miteiashley/kijanikiosk-payments@1.0.0 test
+> echo 'Tests passed' && exit 0
+
+Tests passed
++ npm audit --production
+npm warn config production Use `--omit=dev` instead.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+found 0 vulnerabilities
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Archive)
+[Pipeline] unstash
+[Pipeline] archiveArtifacts
+Archiving artifacts
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Publish)
+[Pipeline] unstash
+[Pipeline] withCredentials
+Masking supported pattern matches of $NPM_TOKEN
+[Pipeline] {
+[Pipeline] sh
++ VERSION=1.0.0-2
++ npm version 1.0.0-2 --no-git-tag-version
+v1.0.0-2
++ echo //registry.npmjs.org/:_authToken=****
++ npm publish --access public
+npm notice
+npm notice 📦  @miteiashley/kijanikiosk-payments@1.0.0-2
+npm notice Tarball Contents
+npm notice 1.6kB Jenkinsfile
+npm notice 19B dist/index.js
+npm notice 213B package.json
+npm notice Tarball Details
+npm notice name: @miteiashley/kijanikiosk-payments
+npm notice version: 1.0.0-2
+npm notice filename: miteiashley-kijanikiosk-payments-1.0.0-2.tgz
+npm notice package size: 868 B
+npm notice unpacked size: 1.8 kB
+npm notice shasum: cbce21112d05286c96b5ffa62db3b93a2cadba8a
+npm notice integrity: sha512-TgzPa6LP2aH5c[...]mcUxiw+fAYzbQ==
+npm notice total files: 3
+npm notice
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
++ @miteiashley/kijanikiosk-payments@1.0.0-2
++ rm .npmrc
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] deleteDir
+[Pipeline] echo
+Status changed
+[Pipeline] echo
+Pipeline succeeded
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
