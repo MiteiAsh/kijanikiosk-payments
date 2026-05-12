@@ -1,5 +1,5 @@
 {
-  "name": "@YOUR_USERNAME/kijanikiosk-payments",
+  "name": "miteiashley/kijanikiosk-payments",
   "version": "1.0.0",
   "scripts": {
     "build": "mkdir -p dist && echo 'KijaniKiosk module' > dist/index.js",
