@@ -1,8 +1,9 @@
 {
-  "name": "miteiashley/kijanikiosk-payments",
+  "name": "kijanikiosk-payments",
   "version": "1.0.0",
+  "main": "src/server.js",
   "scripts": {
-    "build": "mkdir -p dist && echo 'KijaniKiosk module' > dist/index.js",
-    "test": "echo 'Tests passed' && exit 0"
+    "build": "mkdir -p dist && cp src/server.js dist/server.js",
+    "start": "node dist/server.js"
   }
 }
